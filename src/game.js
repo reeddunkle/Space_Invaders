@@ -1,3 +1,5 @@
+var shoot_file = require('../shoot.wav')
+
 export var Game = function(canvasId) {
   var canvas = document.getElementById(canvasId);
   var screen = canvas.getContext('2d');
@@ -7,17 +9,33 @@ export var Game = function(canvasId) {
   this.bodies = this.bodies.concat(createInvaders(this));
   this.bodies = this.bodies.concat(new Player(this, gameSize));
 
+  // this.shootSound = document.getElementById('shoot-sound')
+
   var self = this;
-  loadSound("shoot.wav", function(shootSound) {
+
+
+
+  loadSound('../shoot.wav', function(shootSound) {
     self.shootSound = shootSound;
+    self.playerAlive = true;
+    self.atleastOneInvaderAlive = true;
+
     var tick = function() {
       self.update();
-      self.draw(screen, gameSize);
-      requestAnimationFrame(tick);
+      self.draw(self.screen, self.gameSize);
+      //Run the game logic ~60 times a second
+      self.trackAnimationFrameID = requestAnimationFrame(tick);
     };
-
     tick();
   });
+
+  // var tick = function() {
+  //   self.update();
+  //   self.draw(screen, gameSize);
+  //   requestAnimationFrame(tick);
+  // };
+
+  // tick();
 };
 
 Game.prototype = {
@@ -88,11 +106,11 @@ Player.prototype = {
       var bullet = new Bullet({ x: this.center.x, y: this.center.y - this.size.y - 10 }, { x: 0, y: -7 });
 
       this.game.addBody(bullet);
+
       this.game.shootSound.load();
       this.game.shootSound.play();
     }
   }
-
 };
 
 var Bullet = function(center, velocity) {

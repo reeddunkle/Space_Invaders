@@ -6,7 +6,7 @@ module.exports = {
     path: __dirname + "/dist/"
   },
   devServer: {
-    contentBase: "public/"
+    contentBase: "static/"
   },
   module: {
     loaders: [
@@ -14,6 +14,11 @@ module.exports = {
         test: /\.js$/,
         include: __dirname + "/src/",
         loader: "babel-loader"
+      },
+      {
+        test: /\.wav$|\.mp3$/,
+        include: __dirname + "/static/",
+        loader: "file"
       }
     ]
   }
