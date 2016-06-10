@@ -1,4 +1,11 @@
-var shoot_file = require('../shoot.wav')
+/*
+I'm still stuck on adding sound!
+
+Right now it throws a different error. But it all
+came from adding sound.
+*/
+
+var shoot_file = require('./audio/shoot.wav')
 
 export var Game = function(canvasId) {
   var canvas = document.getElementById(canvasId);
@@ -15,27 +22,19 @@ export var Game = function(canvasId) {
 
 
 
-  loadSound('../shoot.wav', function(shootSound) {
+  loadSound(shoot_file, function(shootSound) {
     self.shootSound = shootSound;
     self.playerAlive = true;
     self.atleastOneInvaderAlive = true;
+  });
 
     var tick = function() {
       self.update();
       self.draw(self.screen, self.gameSize);
-      //Run the game logic ~60 times a second
       self.trackAnimationFrameID = requestAnimationFrame(tick);
     };
     tick();
-  });
-
-  // var tick = function() {
-  //   self.update();
-  //   self.draw(screen, gameSize);
-  //   requestAnimationFrame(tick);
-  // };
-
-  // tick();
+  // });
 };
 
 Game.prototype = {
@@ -217,12 +216,12 @@ var colliding = function(b1, b2) {
 
 
 var loadSound = function(url, callback) {
-  var loaded = function() {
-    callback(sound);
-    sound.removeEventListener('canplaythrough', loaded);
-  };
+        var loaded = function() {
+            callback(sound);
+            sound.removeEventListener('canplaythrough', loaded);
+        }
 
-  var sound = new Audio(url);
-  sound.addEventListener('canplaythrough', loaded);
-  sound.load();
-};
+        var sound = new Audio(url);
+        sound.addEventListener('canplaythrough', loaded);
+        sound.load();
+    }

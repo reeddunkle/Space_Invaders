@@ -17,8 +17,8 @@ module.exports = {
       },
       {
         test: /\.wav$|\.mp3$/,
-        include: __dirname + "/static/",
-        loader: "file"
+        include: __dirname + "/src/audio/",
+        loader: "file-loader"
       }
     ]
   }
