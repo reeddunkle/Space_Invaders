@@ -5,7 +5,7 @@ Right now it throws a different error. But it all
 came from adding sound.
 */
 
-var shoot_file = require('./audio/shoot.wav')
+// var shoot_file = require('./audio/shoot.wav')
 
 export var Game = function(canvasId) {
   var canvas = document.getElementById(canvasId);
@@ -22,29 +22,29 @@ export var Game = function(canvasId) {
 
 
 
-  loadSound(shoot_file, function(shootSound) {
-    self.shootSound = shootSound;
-    self.playerAlive = true;
-    self.atleastOneInvaderAlive = true;
-  });
-
-    var tick = function() {
-      self.update();
-      self.draw(self.screen, self.gameSize);
-      self.trackAnimationFrameID = requestAnimationFrame(tick);
-    };
-    tick();
+  // loadSound('./audio/shoot.wav', function(shootSound) {
+  //   self.shootSound = shootSound;
+  //   self.playerAlive = true;
+  //   self.atleastOneInvaderAlive = true;
   // });
+
+  var tick = function() {
+    self.update();
+    self.draw(self.screen, self.gameSize);
+    requestAnimationFrame(tick);
+  };
+  tick();
 };
 
 Game.prototype = {
 
   update: function() {
+    var self = this;
+
     var bodies =  this.bodies;
     var notCollidingWithAnything = function(b1) {
       return bodies.filter(function(b2) { return colliding(b1, b2) }).length === 0;
     };
-    var self = this;
 
     this.bodies = this.bodies.filter(notCollidingWithAnything);
 
@@ -215,13 +215,13 @@ var colliding = function(b1, b2) {
 };
 
 
-var loadSound = function(url, callback) {
-        var loaded = function() {
-            callback(sound);
-            sound.removeEventListener('canplaythrough', loaded);
-        }
+// var loadSound = function(url, callback) {
+//   var loaded = function() {
+//     callback(sound);
+//     sound.removeEventListener('canplaythrough', loaded);
+//   };
 
-        var sound = new Audio(url);
-        sound.addEventListener('canplaythrough', loaded);
-        sound.load();
-    }
+//   var sound = new Audio(url);
+//   sound.addEventListener('canplaythrough', loaded);
+//   sound.load();
+// };
