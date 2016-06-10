@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Space Invaders
 
 *From Mary Rose Cook's [video](https://vimeo.com/105955605)*
