@@ -1,4 +1,5 @@
 export var Game = function(canvasId) {
+
   var canvas = document.getElementById(canvasId);
   var screen = canvas.getContext('2d');
   var gameSize = { x: canvas.width, y: canvas.height };
@@ -8,16 +9,14 @@ export var Game = function(canvasId) {
   this.bodies = this.bodies.concat(new Player(this, gameSize));
 
   var self = this;
-  loadSound("shoot.wav", function(shootSound) {
-    self.shootSound = shootSound;
-    var tick = function() {
-      self.update();
-      self.draw(screen, gameSize);
-      requestAnimationFrame(tick);
-    };
 
-    tick();
-  });
+  var tick = function() {
+    self.update();
+    self.draw(screen, gameSize);
+    requestAnimationFrame(tick);
+  };
+
+  tick();
 };
 
 Game.prototype = {
@@ -88,8 +87,8 @@ Player.prototype = {
       var bullet = new Bullet({ x: this.center.x, y: this.center.y - this.size.y - 10 }, { x: 0, y: -7 });
 
       this.game.addBody(bullet);
-      this.game.shootSound.load();
-      this.game.shootSound.play();
+      // this.game.shootSound.load();
+      // this.game.shootSound.play();
     }
   }
 
@@ -197,14 +196,3 @@ var colliding = function(b1, b2) {
            (b1.center.y - b1.size.y / 2) > (b2.center.y + b2.size.y / 2));
 };
 
-
-var loadSound = function(url, callback) {
-  var loaded = function() {
-    callback(sound);
-    sound.removeEventListener('canplaythrough', loaded);
-  };
-
-  var sound = new Audio(url);
-  sound.addEventListener('canplaythrough', loaded);
-  sound.load();
-};
