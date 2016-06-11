@@ -14,6 +14,11 @@ module.exports = {
         test: /\.js$/,
         include: __dirname + "/src/",
         loader: "babel-loader"
+      },
+      {
+        test: /\.mp3/,
+        include: __dirname + "/src/audio/",
+        loader: "file-loader"
       }
     ]
   }

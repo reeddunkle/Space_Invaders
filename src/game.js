@@ -5,35 +5,33 @@ Right now it throws a different error. But it all
 came from adding sound.
 */
 
-// var shoot_file = require('./audio/shoot.wav')
+var shoot_sound_URL = require('./audio/shoot.mp3')
 
 export var Game = function(canvasId) {
   var canvas = document.getElementById(canvasId);
-  var screen = canvas.getContext('2d');
-  var gameSize = { x: canvas.width, y: canvas.height };
+  this.screen = canvas.getContext('2d');
+
+  this.gameSize = { x: canvas.width, y: canvas.height };
 
   this.bodies = [];
   this.bodies = this.bodies.concat(createInvaders(this));
-  this.bodies = this.bodies.concat(new Player(this, gameSize));
-
-  // this.shootSound = document.getElementById('shoot-sound')
+  this.bodies = this.bodies.concat(new Player(this, this.gameSize));
 
   var self = this;
-
-
-
-  // loadSound('./audio/shoot.wav', function(shootSound) {
-  //   self.shootSound = shootSound;
-  //   self.playerAlive = true;
-  //   self.atleastOneInvaderAlive = true;
-  // });
 
   var tick = function() {
     self.update();
     self.draw(self.screen, self.gameSize);
     requestAnimationFrame(tick);
   };
-  tick();
+
+  loadSound(shoot_sound_URL, function(shootSound) {
+    self.shootSound = shootSound;
+    self.playerAlive = true;
+    self.atleastOneInvaderAlive = true;
+    tick();
+  });
+
 };
 
 Game.prototype = {
@@ -48,9 +46,16 @@ Game.prototype = {
 
     this.bodies = this.bodies.filter(notCollidingWithAnything);
 
-    for (var i = 0; i < this.bodies.length; i++) {
-      this.bodies[i].update();
-    }
+    var stuff = this.bodies.map(function(c){
+      c.update()
+      return  "element"
+    })
+    console.log(stuff)
+    // for (var i = 0; i < this.bodies.length; i++) {
+    //   this.bodies[i].update();
+    // }
+
+
   },
 
 
@@ -62,7 +67,6 @@ Game.prototype = {
       drawRect(screen, this.bodies[i]);
     }
   },
-
 
   addBody: function(body) {
     this.bodies.push(body);
@@ -215,13 +219,14 @@ var colliding = function(b1, b2) {
 };
 
 
-// var loadSound = function(url, callback) {
-//   var loaded = function() {
-//     callback(sound);
-//     sound.removeEventListener('canplaythrough', loaded);
-//   };
+var loadSound = function(url, callback) {
 
-//   var sound = new Audio(url);
-//   sound.addEventListener('canplaythrough', loaded);
-//   sound.load();
-// };
+  var loaded = function() {
+    callback(sound);
+    sound.removeEventListener('canplaythrough', loaded);
+  };
+
+  var sound = new Audio(url);
+  sound.addEventListener('canplaythrough', loaded);
+  sound.load();
+};
