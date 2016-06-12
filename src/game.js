@@ -1,13 +1,8 @@
-/*
-I'm still stuck on adding sound!
-
-Right now it throws a different error. But it all
-came from adding sound.
-*/
 
 var shoot_sound_URL = require('./audio/shoot.mp3')
 
 export var Game = function(canvasId) {
+
   var canvas = document.getElementById(canvasId);
   this.screen = canvas.getContext('2d');
 
@@ -17,6 +12,7 @@ export var Game = function(canvasId) {
   this.bodies = this.bodies.concat(createInvaders(this));
   this.bodies = this.bodies.concat(new Player(this, this.gameSize));
 
+  // Python habits?
   var self = this;
 
   var tick = function() {
@@ -46,14 +42,9 @@ Game.prototype = {
 
     this.bodies = this.bodies.filter(notCollidingWithAnything);
 
-    var stuff = this.bodies.map(function(c){
-      c.update()
-      return  "element"
-    })
-    console.log(stuff)
-    // for (var i = 0; i < this.bodies.length; i++) {
-    //   this.bodies[i].update();
-    // }
+    for (var i = 0; i < this.bodies.length; i++) {
+      this.bodies[i].update();
+    }
 
 
   },
@@ -66,6 +57,7 @@ Game.prototype = {
     for (let i = 0; i < this.bodies.length; i++) {
       drawRect(screen, this.bodies[i]);
     }
+
   },
 
   addBody: function(body) {
