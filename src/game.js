@@ -30,6 +30,7 @@ export var Game = function(canvasId) {
 
 };
 
+
 Game.prototype = {
 
   update: function() {
@@ -46,7 +47,6 @@ Game.prototype = {
       this.bodies[i].update();
     }
 
-
   },
 
 
@@ -60,9 +60,11 @@ Game.prototype = {
 
   },
 
+
   addBody: function(body) {
     this.bodies.push(body);
   },
+
 
   invadersBelow: function(invader) {
     return this.bodies.filter(function(body) {
@@ -173,6 +175,7 @@ var createInvaders = function(game) {
 
 };
 
+
 var drawRect = function(screen, body) {
 
   screen.fillRect(body.center.x - body.size.x / 2,
@@ -180,6 +183,7 @@ var drawRect = function(screen, body) {
                   body.size.x, body.size.y);
 
 }
+
 
 var Keyboarder = function() {
 
